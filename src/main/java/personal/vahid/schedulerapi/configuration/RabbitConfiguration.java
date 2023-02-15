@@ -23,7 +23,6 @@ import personal.vahid.schedulerapi.model.configs.RabbitConfig;
 public class RabbitConfiguration {
 
     public static final String SCHEDULER_API_EXCHANGE = "scheduler-api-exchange";
-    public static final String SCHEDULER_API_REPLY_QUEUE = "scheduler-api-reply-queue";
 
     @Primary
     @Bean
@@ -52,13 +51,4 @@ public class RabbitConfiguration {
         return new FanoutExchange(SCHEDULER_API_EXCHANGE);
     }
 
-    @Bean
-    public Queue queue(){
-        return new Queue(SCHEDULER_API_REPLY_QUEUE, true);
-    }
-
-    @Bean
-    public Binding binding(FanoutExchange exchange, Queue queue){
-        return BindingBuilder.bind(queue).to(exchange);
-    }
 }
