@@ -4,10 +4,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.FanoutExchange;
-import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -22,7 +19,7 @@ import personal.vahid.schedulerapi.model.configs.RabbitConfig;
 @Slf4j
 public class RabbitConfiguration {
 
-    public static final String SCHEDULER_API_EXCHANGE = "scheduler-api-exchange";
+    public static final String SCHEDULER_API_EXCHANGE = "scheduler-api";
 
     @Primary
     @Bean
@@ -48,7 +45,7 @@ public class RabbitConfiguration {
 
     @Bean
     public FanoutExchange fanoutExchange(){
-        return new FanoutExchange(SCHEDULER_API_EXCHANGE);
+        return new FanoutExchange(SCHEDULER_API_EXCHANGE, true, false);
     }
 
 }

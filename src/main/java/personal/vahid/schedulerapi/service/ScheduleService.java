@@ -1,5 +1,7 @@
 package personal.vahid.schedulerapi.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -12,7 +14,6 @@ import personal.vahid.schedulerapi.model.dto.rabbit.RabbitSymbolicProducerDTO;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.OptionalLong;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -22,11 +23,19 @@ public class ScheduleService {
 
     RabbitTemplate rabbitTemplate;
     FanoutExchange fanoutExchange;
+    ObjectMapper objectMapper;
 
     public Optional<Long> scheduleSymbolicJobs(List<SymbolicJob> jobs){
-        RabbitSymbolicProducerDTO dto = RabbitSymbolicProducerDTO.builder()
+        RabbitSymbolicProducerDTO producerDTO = RabbitSymbolicProducerDTO.builder()
                 .jobs(jobs)
                 .build();
+        byte[] dto;
+        try {
+            dto = objectMapper.writeValueAsBytes(producerDTO);
+        } catch (JsonProcessingException e) {
+            log.error("Could not map dto to bytes. {}", e.getMessage());
+            return Optional.empty();
+        }
         Object response = rabbitTemplate.convertSendAndReceive(fanoutExchange.getName(), "", dto);
         Long optimalAnswer;
         try {
@@ -35,6 +44,6 @@ public class ScheduleService {
             log.error("Could not cast response to long. {}", e.getMessage());
             return Optional.empty();
         }
-        return Optional.of(optimalAnswer);
+        return Optional.ofNullable(optimalAnswer);
     }
 }

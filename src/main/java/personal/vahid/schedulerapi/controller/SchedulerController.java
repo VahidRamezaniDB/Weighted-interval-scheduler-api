@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import personal.vahid.schedulerapi.model.SymbolicJob;
+import personal.vahid.schedulerapi.model.dto.RequestSymbolicScheduleDTO;
 import personal.vahid.schedulerapi.service.ScheduleService;
 
 import java.util.List;
@@ -25,8 +26,8 @@ public class SchedulerController {
     ScheduleService scheduleService;
 
     @PostMapping("/sym")
-    public ResponseEntity<Long> getOptimalSolution(@RequestBody List<SymbolicJob> jobs){
-        Optional<Long> answer =  scheduleService.scheduleSymbolicJobs(jobs);
+    public ResponseEntity<Long> getOptimalSolution(@RequestBody RequestSymbolicScheduleDTO requestDto){
+        Optional<Long> answer =  scheduleService.scheduleSymbolicJobs(requestDto.jobs());
         if(answer.isEmpty()){
             return ResponseEntity.internalServerError().build();
         }
