@@ -5,15 +5,15 @@ server:
 
 spring:
   rabbitmq:
-    addresses: localhost:5672
-    username: guest
-    password: guest
-    virtual-host: /
+    addresses: ${RABBITMQ_URL}
+    username: ${RABBITMQ_USER}
+    password: ${RABBITMQ_PASS}
+    virtual-host: ${RABBITMQ_VHOST}
 
 app:
   read-only: false
   rabbit:
-    addresses: localhost:5672
-    username: guest
-    password: guest
-    virtual-host: /
+    addresses: ${RABBITMQ_URL}
+    username: ${RABBITMQ_USER}
+    password: ${RABBITMQ_PASS}
+    virtual-host: ${RABBITMQ_VHOST}
