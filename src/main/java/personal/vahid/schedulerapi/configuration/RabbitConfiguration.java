@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -44,8 +45,8 @@ public class RabbitConfiguration {
     }
 
     @Bean
-    public FanoutExchange fanoutExchange(){
-        return new FanoutExchange(SCHEDULER_API_EXCHANGE, true, false);
+    public DirectExchange directExchange(){
+        return new DirectExchange(SCHEDULER_API_EXCHANGE, true, false);
     }
 
 }
